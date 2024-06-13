@@ -19,3 +19,14 @@ smart_inventory_management/
 └── docker-compose.yml
 
 ````
+
+
+### Building docker image
+```
+ docker build -t anilprz/sims-flask:v0.0.1 -f build/Dockerfile .
+```
+
+### Push image to docker hub
+```
+docker image push anilprz/sims-flask:v0.0.1
+```
