@@ -1,0 +1,24 @@
+
+services:
+  simflask:
+    container_name: simflask
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    ports:
+      - "8010:5000"
+    volumes:
+      - ./server:/app
+    environment:
+      FLASK_ENV: development
+    env_file:
+      - build/.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`zmysims.com`)"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
