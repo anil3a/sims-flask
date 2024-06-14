@@ -16,5 +16,11 @@ RUN pip install -r requirements.txt
 # Copy the server folder into the container
 COPY ../server /app
 
+ENV PYTHONPATH=/app
+
+# Set environment variables
+ENV FLASK_APP=run.py
+ENV FLASK_ENV=development
+
 # Specify the command to run on container start
 CMD ["python", "run.py"]
