@@ -31,7 +31,7 @@ Provide a brief overview of the project, its purpose, and its main features.
 
 ### Project Structure
 Outline the project directory structure for clarity.
-
+```
 smart_inventory_management/
 ├── build/
 │   ├── Dockerfile
@@ -56,7 +56,7 @@ smart_inventory_management/
 │   ├── run.py
 │   └── requirements.txt
 └── docker-compose.yml
-
+```
 
 
 ### Setup Instructions
