@@ -6,7 +6,7 @@
 #### **Release 1: User Authentication**
 - [x] User registration
 - [x] User login
-- [ ] Password reset
+- [-] Password reset (not priority)
 #### **Release 2: Basic Inventory Management**
 - [x] Add new items
 - [x] Update item details

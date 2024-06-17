@@ -16,11 +16,33 @@ item_response_model = item_ns.model('ItemResponse', {
 
 @item_ns.route('/')
 class ItemServiceList(Resource):
-    @item_ns.doc('list_items')
+    @item_ns.doc('list_items', params={
+        'name': 'Filter items by name',
+        'min_quantity': 'Minimum quantity filter',
+        'max_quantity': 'Maximum quantity filter'
+    })
     @item_ns.marshal_list_with(item_model)
     def get(self):
-        """List all items"""
-        items = Item.query.all()
+        """
+        List all items
+
+        Supports parameters searching and filtering result
+        """
+        query_params = request.args
+        name_filter = query_params.get('name')
+        min_quantity = query_params.get('min_quantity')
+        max_quantity = query_params.get('max_quantity')
+
+        items_query = Item.query
+
+        if name_filter:
+            items_query = items_query.filter(Item.name.ilike(f'%{name_filter}%'))
+        if min_quantity:
+            items_query = items_query.filter(Item.quantity >= int(min_quantity))
+        if max_quantity:
+            items_query = items_query.filter(Item.quantity <= int(max_quantity))
+
+        items = items_query.all()
         return [{
             'id': item.id,
             'name': item.name,
