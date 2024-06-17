@@ -1,22 +1,17 @@
 from flask import request
 from app.models import User
 from app import db
-from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
 from flask_restx import Namespace, Resource
 from app.models import get_user_model
-from app.utils.security import check_password_hash, generate_access_token
-
-
-bcrypt = Bcrypt()
+from app.utils.security import hash_password, check_password_hash, generate_access_token
 
 auth_ns = Namespace('auth', description='Authentication related operations')
 
 user_model = get_user_model(auth_ns)
 
-
 @auth_ns.route('/register')
-class Register(Resource):
+class RegisterService(Resource):
     @auth_ns.doc('user_model')
     @auth_ns.expect(user_model)
     def post(self):
@@ -33,7 +28,7 @@ class Register(Resource):
         if User.query.filter_by(email=email).first():
             return {'message': 'Email already exists'}, 400
 
-        password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        password_hash = hash_password(password).decode('utf-8')
         new_user = User(
             username=username,
             email=email,
@@ -48,8 +43,8 @@ class Register(Resource):
 
 
 @auth_ns.route('/login')
-class Login(Resource):
-    @auth_ns.doc('login_user')
+class LoginService(Resource):
+    @auth_ns.doc('user_model')
     @auth_ns.expect(user_model)
     def post(self):
         """
