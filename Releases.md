@@ -15,8 +15,8 @@
 - [x] View all items
 - [x] Search and filter items
 #### **Release 4: Basic Dashboard**
-- [ ] Basic inventory overview
-- [ ] Recent activity log
+- [x] Basic inventory overview
+- [x] Recent activity log
 #### **Release 5: User Roles and Permissions**
 - [ ] Admin role
 - [ ] Manager role
