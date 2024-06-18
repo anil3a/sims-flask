@@ -11,17 +11,16 @@ Some of the release map and todos are wriiten in separate file.
 2. Project Structure
 3. Setup Instructions
 4. Configuration
-5. Usage
-6. Features
+5. Migration
+6. Running Application
+7. Features
     1. Basic Features
     2. Advanced Features
 
-7. Testing
-8. Deployment
-9. Milestones
+8. Testing
+9. Deployment
 10. Contributing
 11. License
-12. Acknowledgements
 
 
 
@@ -52,6 +51,7 @@ smart_inventory_management/
 │   │   ├── utils/
 │   │   │   ├── __init__.py
 │   │   │   ├── config.py
+│   │   │   └── security.py
 │   ├── config.py
 │   ├── run.py
 │   └── requirements.txt
@@ -113,8 +113,43 @@ docker-compose exec simflask flask db upgrade
 ### Running the Application
 Access the application at http://localhost:5000/ or http://zmysims.com if using docker Traefik.
 
-### API Endpoints
-List of available API endpoints and their usage.
+### Flask REST API
+
+#### Authentication
+
+This API uses JWT (JSON Web Token) for authentication. To use the API, you need to:
+
+1. Obtain a JWT token using the `/auth/login` endpoint.
+2. Include the token in the `Authorization` header for all subsequent requests.
+
+### Steps
+
+1. ***Login***
+
+   Send a POST request to `/auth/login` with your username and password to obtain a JWT token.
+
+   ```bash
+   curl -X POST "http://zmysims/auth/login" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"username\": \"your_username\", \"password\": \"your_password\"}"
+
+2. ***Response***
+    ```json
+    {
+    "access_token": "your_jwt_token"
+    }
+    ```
+3. ***Use the Token***
+
+    Include the token in the Authorization header for all subsequent requests.
+
+    ```bash
+    curl -X GET "http://localhost:5000/items" -H "accept: application/json" -H "Authorization: Bearer your_jwt_token"
+    ```
+
+4. ***Swagger Documentation***
+
+    The API documentation is available at `http://zmysims/`. You can enter your JWT token in the top-right corner to authorize your requests as
+    `Bearer YOUR-GENERATED-TOKEN-HERE`
+
 
 
 ### Features
@@ -185,23 +220,6 @@ Steps to deploy the application to production.
             external: true
     ```
 
-### Milestones
-Outline key milestones and release versions.
-
-### Milestone 1: MVP
-- Basic inventory management (CRUD operations)
-- User authentication
-
-### Milestone 2: Advanced Features
-- User roles and permissions
-- Reporting and analytics
-
-### Milestone 3: Final Release
-- Full feature set
-- Comprehensive testing and bug fixes
-
-### Contributing
-- Guidelines for contributing to the project.
 
 ### How to Contribute
 - Fork the repository

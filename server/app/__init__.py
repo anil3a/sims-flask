@@ -21,11 +21,22 @@ def create_app(config_name):
     bcrypt.init_app(app)
     jwt.init_app(app)
 
+    authorizations = {
+        'Bearer Auth': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization',
+            'description': 'Add a JWT with ** Bearer &lt;JWT&gt; **'
+        }
+    }
+
     api = Api(
         app,
         version='0.0.1',
         title='Smart Inventory Management API',
-        description='API documentation for Smart Inventory Management System'
+        description='API documentation for Smart Inventory Management System',
+        authorizations=authorizations,
+        security='Bearer Auth'
     )
 
     from app.routes import register_blueprints

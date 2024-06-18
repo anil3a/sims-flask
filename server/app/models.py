@@ -1,5 +1,4 @@
 from app import db
-from flask_restx import fields, Api
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -11,15 +10,10 @@ class User(db.Model):
     firstname = db.Column(db.String(64), nullable=False)
     lastname = db.Column(db.String(64), nullable=True)
 
-def get_user_model(api: Api):
-    return api.model('User', {
-        'id': fields.Integer(description='The user ID'),
-        'username': fields.String(required=True, description='The username'),
-        'email': fields.String(required=True, description='The email address'),
-        'password_hash': fields.String(description='The password hash'),
-        'firstname': fields.String(description='The First name'),
-        'lastname': fields.String(description='The Last name'),
-    })
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
 
 
 class Item(db.Model):
@@ -29,10 +23,24 @@ class Item(db.Model):
     name = db.Column(db.String(128), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
+    def __init__(self, name, quantity):
+        self.name = name
+        self.quantity = quantity
 
-def get_item_model(api: Api):
-    return api.model('Item', {
-        'id': fields.Integer(description='The item ID'),
-        'name': fields.String(required=True, description='The item name'),
-        'quantity': fields.Integer(required=True, description='The item quantity')
-    })
+
+class ActivityLog(db.Model):
+    __tablename__ = 'activitylog'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    action = db.Column(db.String(128), nullable=False)
+    timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('activities', lazy=True))
+    rel_text = db.Column(db.String(64), nullable=True)
+    rel_id = db.Column(db.Integer, nullable=True)
+
+    def __init__(self, action, user_id, rel_text=None, rel_id=None):
+        self.action = action
+        self.user_id = user_id
+        self.rel_text = rel_text
+        self.rel_id = rel_id

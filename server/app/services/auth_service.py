@@ -1,14 +1,15 @@
 from flask import request
-from app.models import User
 from app import db
 from flask_jwt_extended import create_access_token
 from flask_restx import Namespace, Resource
-from app.models import get_user_model
+from app.models import User
+from app.api_models import get_user_model, get_login_model
 from app.utils.security import hash_password, check_password_hash, generate_access_token
 
 auth_ns = Namespace('auth', description='Authentication related operations')
 
 user_model = get_user_model(auth_ns)
+login_model = get_login_model(auth_ns)
 
 @auth_ns.route('/register')
 class RegisterService(Resource):
@@ -44,8 +45,8 @@ class RegisterService(Resource):
 
 @auth_ns.route('/login')
 class LoginService(Resource):
-    @auth_ns.doc('user_model')
-    @auth_ns.expect(user_model)
+    @auth_ns.doc('login_model')
+    @auth_ns.expect(login_model)
     def post(self):
         """
         Log in an existing user.
