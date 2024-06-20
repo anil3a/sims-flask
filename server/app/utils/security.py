@@ -5,7 +5,7 @@ bcrypt = Bcrypt()
 
 def hash_password(password):
     """Hashes a password using bcrypt."""
-    return bcrypt.generate_password_hash(password).decode('utf-8')
+    return bcrypt.generate_password_hash(password)
 
 def check_password_hash(hashed_password, password):
     """Checks if a password matches its hashed version."""

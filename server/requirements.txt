@@ -4,5 +4,6 @@ Flask-SQLAlchemy
 psycopg2-binary
 flask_migrate
 flask-bcrypt
+flask-cors
 flask-jwt-extended
 flask-restx

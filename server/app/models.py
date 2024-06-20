@@ -10,10 +10,12 @@ class User(db.Model):
     firstname = db.Column(db.String(64), nullable=False)
     lastname = db.Column(db.String(64), nullable=True)
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password_hash, firstname=None, lastname=None):
         self.username = username
         self.email = email
-        self.password = password
+        self.password_hash = password_hash
+        self.firstname = firstname
+        self.lastname = lastname
 
 
 class Item(db.Model):
